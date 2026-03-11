@@ -5,8 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voyage</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+    <div class="container">
+        <div class="home-page">
+            <header>
+                VOYAGE
+            </header>
+            <div class="hero">
+                <h1>PLAN YOUR TRIP</h1>
+                <p>Search any city. Build your perfect itinerary, day by day.</p>
+            </div>
+            <div class="search-container">
+                <i class="fa-regular fa-location-dot"></i>
+                <input type="text" id="search-input" placeholder="Where do you want to go?">
+                <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+            <div class="saved-trips-container">
+                <h3><i class="fa-solid fa-minus"></i> YOUR SAVED TRIPS</h3>
+                <div class="trip">trip1</div>
+                <div class="trip">trip2</div>
+                <div class="trip">trip3</div>
+            </div>
+        </div>
+
+        <div class="planing-page hidden">
+            <header>
+                VOYAGE
+            </header>
+            <div class="banner">
+                <div class="weather">weather</div>
+                <div class="country">country</div>
+            </div>
+            <div class="explore-container">
+                <div class="category-tabs">
+                    <button class="attractions">Attractions</button>
+                    <button class="restaurants">Restaurants</button>
+                    <button class="shoppins">Shopping</button>
+                </div>
+                <div class="tab-places">
+                    <div class="place">place1</div>
+                    <div class="place">place2</div>
+                    <div class="place">place3</div>
+                    <div class="place">place4</div>
+                </div>
+            </div>
+            <div class="plan">
+                <div class="trip-schedule">
+                    <h3><i class="fa-regular fa-calendar"></i>Trip Schedule</h3>
+                    <div class="day-plan">day1</div>
+                    <div class="day-plan">day2</div>
+                    <div class="day-plan">day3</div>
+                </div>
+        
+                <div class="packing-list">
+                    <h3><i class="fa-solid fa-list-check"></i>Packing List</h3>
+                    <input type="checkbox" id="task">
+                    <label for="task">Passport & Visa</label>
+                    <div class="task-insertion">
+                        <input type="text" id="task-input" placeholder="Add item...">
+                        <button id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                </div>
+        
+                <button id="save-plan-btn"><i class="fa-regular fa-map"></i> Generate Itinerary</button>
+            </div>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>

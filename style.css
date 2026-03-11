@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Color Palette */
+:root {
+    --primary: #13ECC8;
+    --primary-dark: #10221F;
+    --secondary: #A855F7;
+    --text-dark: #333333;
+    --text-light: #ffffff;
+    --border-radius: 8px;
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: sans-serif;
+    /* background-color: var(--primary-dark); */
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    /* home page background */
+    background-image: url("assests/michael-worden-TomHMvzU4jQ-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+header {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.home-page {
+
+}
+
+.hidden {
+    display: none;
+}
