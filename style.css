@@ -9,18 +9,27 @@
     --primary: #13ECC8;
     --primary-dark: #10221F;
     --secondary: #A855F7;
-    --text-dark: #333333;
-    --text-light: #ffffff;
-    --border-radius: 8px;
+    --text-dark: #0A1211;
+    --text-grey-dark: #64748B;
+    --text-grey-light: #94A3B8;
+    --text-light: #CBD5E1;
+    --text-white: #ffffff;
+    --border-radius: 16px;
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
 
 body {
-    font-family: sans-serif;
-    /* background-color: var(--primary-dark); */
-    color: var(--text-light);
+    font-family: 'Space Grotesk', sans-serif;
+    background-image: url("assests/nick-rickert-dS2L5bKTSaM-unsplash.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    backdrop-filter: blur(2px);
+    min-height: 100vh;
+    color: var(--text-white);
     line-height: 1.6;
+    text-align: center;
 }
 
 .container {
@@ -28,11 +37,26 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     padding: 2rem 1rem;
-    /* home page background */
-    background-image: url("assests/michael-worden-TomHMvzU4jQ-unsplash.jpg");
-    background-size: cover;
-    background-position: center;
-    min-height: 100vh;
+}
+
+.glass {
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
 }
 
 header {
@@ -40,10 +64,178 @@ header {
     margin-bottom: 2rem;
 }
 
-.home-page {
-
+.hero {
+    margin: 3rem auto;
 }
 
-.hidden {
-    display: none;
+.hero h1 {
+    font-size: 5rem;
+}
+
+.hero span {
+    background: linear-gradient(to right, var(--primary), var(--secondary));
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-light);
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    border-radius: var(--border-radius);
+    color: var(--text-grey-dark);
+    margin: 3rem auto;
+    padding-left: 20px;
+    padding-right: 8px;
+    max-width: 750px;
+    height: 80px;
+    font-size: 1.3rem;
+}
+
+#search-input {
+    flex: 1;
+    font-size: 1rem;
+    margin: auto 20px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-white);
+}
+
+#search-input:focus {
+    outline: none;
+}
+
+.calender-picker {
+    display: flex;
+    flex-direction: column;
+}
+
+#explore-btn {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+    background-color: var(--primary);
+    padding: 6px 20px;
+    height: 50px;
+    border-radius: 24px;
+    min-width: 8%;
+    max-width: 600px;
+}
+
+#explore-btn i {
+    margin-left: 5px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.4rem;
+    margin-bottom: 20px;
+    padding: 0 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: var(--primary);
+}
+
+.saved-trips-container {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.trips {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.trip {
+    height: 260px;
+    max-width: 280px;
+    overflow: clip;
+    padding: 16px;
+    border-radius: var(--border-radius);
+} 
+
+.pic-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    height: 160px;
+    width: 100%;
+    margin-bottom: 14px;
+}
+
+.trip img {
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.trip img:hover {
+    transform: scale(1.1);
+}
+
+.pic-container i {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgb(215, 88, 88);
+    border-radius: 20px;
+    height: 30px;
+    width: 30px;
+    font-size: 14px;
+    opacity: 0;
+}
+
+.pic-container:hover i {
+    opacity: 1;
+}
+
+.pic-container #duration {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    font-size: 10px;
+    color: var(--secondary);
+}
+
+#country-capital {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+#saved-on-date {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--text-grey-light);
+}
+
+
+
+
+
+
+
+
+
+
+.planinng-page {
+    background-color: var(--primary-dark);
 }

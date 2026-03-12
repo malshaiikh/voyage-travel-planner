@@ -8,27 +8,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
+        <header>VOYAGE</header>
         <div class="home-page">
-            <header>
-                VOYAGE
-            </header>
             <div class="hero">
-                <h1>PLAN YOUR TRIP</h1>
+                <h1>PLAN YOUR <span>TRIP</span></h1>
                 <p>Search any city. Build your perfect itinerary, day by day.</p>
             </div>
-            <div class="search-container">
+            <div class="search-container glass">
                 <i class="fa-regular fa-location-dot"></i>
                 <input type="text" id="search-input" placeholder="Where do you want to go?">
+                <i class="fa-regular fa-calendar"></i>
+                <div class="calender-picker">
+                    <label for="start-date">FROM</label>
+                    <input type="date" name="start-date" id="start-date">
+                </div>
+                <hr>
+                <i class="fa-regular fa-calendar"></i>
+                <div class="calender-picker">
+                    <label for="end-date">TO</label>
+                    <input type="date" name="end-date" id="end-date">
+                </div>
                 <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
             </div>
             <div class="saved-trips-container">
-                <h3><i class="fa-solid fa-minus"></i> YOUR SAVED TRIPS</h3>
-                <div class="trip">trip1</div>
-                <div class="trip">trip2</div>
-                <div class="trip">trip3</div>
+                <h3 class="section-title"> YOUR SAVED TRIPS</h3>
+                <div class="trips">
+                    <div class="trip glass">
+                        <div class="pic-container">
+                            <img id="country-pic" src="assests/gabriel-villaverde-RmK-amKtLLU-unsplash.jpg" alt="trip country picture">
+                            <i class="fa-regular fa-trash-can hidden"></i>
+                            <p id="duration" class="glass"># days</p>
+                        </div>
+                        <p id="country-capital">Country, Capital</p>
+                        <p id="saved-on-date">Saved on Oct 12, 2023</p>
+                    </div>
+                    <div class="trip glass">
+                        <div class="pic-container">
+                            <img id="country-pic" src="assests/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="trip country picture">
+                            <i class="fa-regular fa-trash-can hidden"></i>
+                            <p id="duration" class="glass"># days</p>
+                        </div>
+                        <p id="country-capital">Country, Capital</p>
+                        <p id="saved-on-date">Saved on Oct 12, 2023</p>
+                    </div>
+
+                </div>
             </div>
         </div>
 
