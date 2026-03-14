@@ -21,11 +21,11 @@
 
 body {
     font-family: 'Space Grotesk', sans-serif;
-    background-image: url("assests/nick-rickert-dS2L5bKTSaM-unsplash.jpg");
+    background-image: url("assetss/nick-rickert-dS2L5bKTSaM-unsplash.jpg");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(1px);
     min-height: 100vh;
     color: var(--text-white);
     line-height: 1.6;
@@ -59,13 +59,26 @@ button {
     transition: var(--transition);
 }
 
-header {
+header, nav {
+    display: flex;
+    align-items: center;
     text-align: left;
-    margin-bottom: 2rem;
+    margin: 2.5rem;
+    font-weight: 900;
+}
+
+.logo {
+    margin-right: 10px;
+    padding: 1px 4px;
+    background-color: var(--primary);
+    border-radius: var(--border-radius);
+    font-size: 20px;
+    color: var(--text-dark);
 }
 
 .hero {
-    margin: 3rem auto;
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
 }
 
 .hero h1 {
@@ -89,7 +102,7 @@ header {
     align-items: center;
     border-radius: var(--border-radius);
     color: var(--text-grey-dark);
-    margin: 3rem auto;
+    margin: 3.5rem auto;
     padding-left: 20px;
     padding-right: 8px;
     max-width: 750px;
@@ -104,6 +117,7 @@ header {
     background-color: transparent;
     border: none;
     color: var(--text-white);
+    border-right: 1px solid var(--text-grey-dark);
 }
 
 #search-input:focus {
@@ -113,6 +127,11 @@ header {
 .calender-picker {
     display: flex;
     flex-direction: column;
+    min-width: 80px;
+}
+
+input[type="date"] {
+    display: none;
 }
 
 #explore-btn {
@@ -204,7 +223,7 @@ header {
     opacity: 1;
 }
 
-.pic-container #duration {
+.pic-container p {
     position: absolute;
     bottom: 10px;
     left: 10px;
