@@ -14,97 +14,102 @@
 </head>
 <body>
     <header>
-        <div class="logo"><i class="fa-regular fa-compass"></i></div> VOYAGE
+        <div class="logo-container">
+            <div class="logo"><i class="fa-regular fa-compass"></i></div> VOYAGE
+        </div>
+        <button class="hidden" id="back-btn">Back</button>
     </header>
-    <div class="container">
-        <div class="home-page">
-            <div class="hero">
-                <h1>PLAN YOUR <span>TRIP</span></h1>
-                <p>Search any city. Build your perfect itinerary, day by day.</p>
-            </div>
-            <div class="search-container glass">
-                <i class="fa-regular fa-location-dot"></i>
-                <input type="text" id="search-input" placeholder="Where do you want to go?">
-                <i class="fa-regular fa-calendar"></i>
-                <div class="calender-picker">
-                    <label for="start-date">FROM</label>
-                    <input type="date" name="start-date" id="start-date">
-                </div>
-                <hr>
-                <i class="fa-regular fa-calendar"></i>
-                <div class="calender-picker">
-                    <label for="end-date">TO</label>
-                    <input type="date" name="end-date" id="end-date">
-                </div>
-                <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
-            <div class="saved-trips-container">
-                <h3 class="section-title"> YOUR SAVED TRIPS</h3>
-                <div class="trips">
-                    <div class="trip glass">
-                        <div class="pic-container">
-                            <img id="country-pic" src="assetss/gabriel-villaverde-RmK-amKtLLU-unsplash.jpg" alt="trip country picture">
-                            <i class="fa-regular fa-trash-can hidden"></i>
-                            <p id="duration" class="glass"># DAYS</p>
-                        </div>
-                        <p id="country-capital">Country, Capital</p>
-                        <p id="saved-on-date">Saved on Oct 12, 2023</p>
-                    </div>
-                    <div class="trip glass">
-                        <div class="pic-container">
-                            <img id="country-pic" src="assetss/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="trip country picture">
-                            <i class="fa-regular fa-trash-can hidden"></i>
-                            <p id="duration" class="glass"># DAYS</p>
-                        </div>
-                        <p id="country-capital">Country, Capital</p>
-                        <p id="saved-on-date">Saved on Oct 12, 2023</p>
-                    </div>
 
+    <div class="home-page">
+        <div class="hero">
+            <h1>PLAN YOUR <span>TRIP</span></h1>
+            <p>Search any city. Build your perfect itinerary, day by day.</p>
+        </div>
+        <div class="search-container glass">
+            <i class="fa-regular fa-location-dot"></i>
+            <input type="text" id="search-input" placeholder="Where do you want to go?">
+            <i class="fa-regular fa-calendar"></i>
+            <div class="calender-picker">
+                <label for="start-date">FROM</label>
+                <input type="date" name="start-date" id="start-date">
+            </div>
+            <hr>
+            <i class="fa-regular fa-calendar"></i>
+            <div class="calender-picker">
+                <label for="end-date">TO</label>
+                <input type="date" name="end-date" id="end-date">
+            </div>
+            <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div class="saved-trips-container">
+            <h3 class="section-title"> YOUR SAVED TRIPS</h3>
+            <div class="trips">
+                <div class="trip glass">
+                    <div class="pic-container">
+                        <img id="country-pic" src="assets/gabriel-villaverde-RmK-amKtLLU-unsplash.jpg" alt="trip country picture">
+                        <i class="fa-regular fa-trash-can hidden"></i>
+                        <p id="duration" class="glass"># DAYS</p>
+                    </div>
+                    <p id="country-capital">Country, Capital</p>
+                    <p id="saved-on-date">Saved on Oct 12, 2023</p>
                 </div>
+                <div class="trip glass">
+                    <div class="pic-container">
+                        <img id="country-pic" src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="trip country picture">
+                        <i class="fa-regular fa-trash-can hidden"></i>
+                        <p id="duration" class="glass"># DAYS</p>
+                    </div>
+                    <p id="country-capital">Country, Capital</p>
+                    <p id="saved-on-date">Saved on Oct 12, 2023</p>
+                </div>
+
             </div>
         </div>
+    </div>
 
-        <div class="planing-page hidden">
-            <nav>
-                <div class="logo"><i class="fa-regular fa-compass"></i></div> VOYAGE
-            </nav>
-            <div class="banner">
-                <div class="weather">weather</div>
-                <div class="country">country</div>
-            </div>
-            <div class="explore-container">
-                <div class="category-tabs">
-                    <button class="attractions">Attractions</button>
-                    <button class="restaurants">Restaurants</button>
-                    <button class="shopping">Shopping</button>
+    <div class="planning-page hidden">
+        <div class="explore-section">
+            <div class="country-banner">
+                <div class="country-info">
+                    <h1 id="country">country</h1>
+                    <p id="capital"><i class="fa-regular fa-location-dot"></i> capital</p>
                 </div>
-                <div class="tab-places">
+                <div class="weather">weather</div>
+            </div>
+            <div class="results-explore">
+                <div class="category-tabs">
+                    <button class="attractions"><i class="fa-solid fa-archway"></i> Attractions</button>
+                    <button class="restaurants"><i class="fa-regular fa-utensils"></i> Restaurants</button>
+                    <button class="shopping"><i class="fa-regular fa-bag-shopping"></i> Shopping</button>
+                </div>
+                <div class="places-container">
                     <div class="place">place1</div>
                     <div class="place">place2</div>
                     <div class="place">place3</div>
                     <div class="place">place4</div>
                 </div>
             </div>
-            <div class="plan">
-                <div class="trip-schedule">
-                    <h3><i class="fa-regular fa-calendar"></i>Trip Schedule</h3>
-                    <div class="day-plan">day1</div>
-                    <div class="day-plan">day2</div>
-                    <div class="day-plan">day3</div>
-                </div>
-        
-                <div class="packing-list">
-                    <h3><i class="fa-solid fa-list-check"></i>Packing List</h3>
-                    <input type="checkbox" id="task">
-                    <label for="task">Passport & Visa</label>
-                    <div class="task-insertion">
-                        <input type="text" id="task-input" placeholder="Add item...">
-                        <button id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
-                    </div>
-                </div>
-        
-                <button id="save-plan-btn"><i class="fa-regular fa-map"></i> Generate Itinerary</button>
+        </div>
+        <div class="plan">
+            <div class="trip-schedule">
+                <h3><i class="fa-regular fa-calendar"></i>Trip Schedule</h3>
+                <div class="unassigned">UNASSIGNED</div>
+                <div class="day-plan">day1</div>
+                <div class="day-plan">day2</div>
+                <div class="day-plan">day3</div>
             </div>
+            <hr>
+            <div class="packing-list">
+                <h3><i class="fa-solid fa-list-check"></i>Packing List</h3>
+                <input type="checkbox" id="task">
+                <label for="task">Passport & Visa</label>
+                <div class="task-insertion">
+                    <input type="text" id="task-input" placeholder="Add item...">
+                    <button id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
+                </div>
+            </div>
+    
+            <button id="save-plan-btn"><i class="fa-regular fa-map"></i> Generate Itinerary</button>
         </div>
     </div>
     <script src="script.js"></script>
