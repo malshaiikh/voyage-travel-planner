@@ -54,6 +54,16 @@ button {
     transition: var(--transition);
 }
 
+#error-container {
+    background-color: rgba(255, 126, 95, 0.1);
+    border: 1px solid var(--primary);
+    border-radius: var(--border-radius);
+    justify-self: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    width: max-content;
+}
+
 .home-page {
     width: 100%;
     max-width: 1000px;
@@ -67,7 +77,7 @@ header {
     justify-content: space-between;
     text-align: left;
     font-weight: 900;
-    padding: 1.8rem;
+    padding: 1.1rem 1.8rem;
 }
 
 .logo-container {
@@ -309,11 +319,18 @@ body.solid-bg {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    height: 200px;
+    height: 260px;
     margin-bottom: 2rem;
     padding: 20px;
-    position: center;
     background-size: cover;
+    background-position: center;
+    border-radius: 24px;
+    overflow: hidden;
+    transition: background-size 0.6s ease;
+}
+
+.destination-banner:hover {
+    background-size: 110%;
 }
 
 .weather {
@@ -380,3 +397,4 @@ h3 i {
     border-radius: 24px;
     padding: 16px 60px;
 }
+
