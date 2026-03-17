@@ -23,11 +23,11 @@
     <div class="home-page">
         <div class="hero">
             <h1>PLAN YOUR <span>TRIP</span></h1>
-            <p>Search any city. Build your perfect itinerary, day by day.</p>
+            <p>Search any destination. Build your perfect itinerary, day by day.</p>
         </div>
         <div class="search-container glass">
             <i class="fa-regular fa-location-dot"></i>
-            <input type="text" id="search-input" placeholder="Where do you want to go?">
+            <input type="text" id="search-input" placeholder="Search for city or country">
             <i class="fa-regular fa-calendar"></i>
             <div class="calender-picker">
                 <label for="start-date">FROM</label>
@@ -40,6 +40,9 @@
                 <input type="date" name="end-date" id="end-date">
             </div>
             <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div id="error-container" class="hidden">
+            <p>No destination found. Try another search term.</p>
         </div>
         <div class="saved-trips-container">
             <h3 class="section-title"> YOUR SAVED TRIPS</h3>
@@ -69,13 +72,9 @@
 
     <div class="planning-page hidden">
         <div class="explore-section">
-            <div class="country-banner">
-                <div class="country-info">
-                    <h1 id="country">country</h1>
-                    <p id="capital"><i class="fa-regular fa-location-dot"></i> capital</p>
-                </div>
-                <div class="weather">weather</div>
-            </div>
+
+            <div class="destination-banner"></div>
+
             <div class="results-explore">
                 <div class="category-tabs">
                     <button class="attractions"><i class="fa-solid fa-archway"></i> Attractions</button>
@@ -112,6 +111,7 @@
             <button id="save-plan-btn"><i class="fa-regular fa-map"></i> Generate Itinerary</button>
         </div>
     </div>
+    <script src="config.js"></script>  
     <script src="script.js"></script>
 </body>
 </html>

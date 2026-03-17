@@ -144,6 +144,14 @@ header {
     outline: none;
 }
 
+#search-input:-webkit-autofill,
+#search-input:-webkit-autofill:hover,
+#search-input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+    -webkit-text-fill-color: var(--text-white);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .calender-picker {
     display: flex;
     flex-direction: column;
@@ -297,18 +305,15 @@ body.solid-bg {
     width: 100%;
 }
 
-.country-banner {
+.destination-banner {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    background-color: var(--secondary);
     height: 200px;
     margin-bottom: 2rem;
     padding: 20px;
-}
-
-.country-info {
-
+    position: center;
+    background-size: cover;
 }
 
 .weather {
