@@ -7,21 +7,22 @@
 /* Color Palette */
 :root {
     --primary: #13ECC8;
-    --primary-dark: #10221F;
+    --background-color: #10221F;
     --secondary: #A855F7;
     --text-dark: #0A1211;
     --text-grey-dark: #64748B;
     --text-grey-light: #94A3B8;
     --text-light: #CBD5E1;
     --text-white: #ffffff;
-    --border-radius: 16px;
+    --border-radius-small: 16px;
+    --border-radius-large: 24px;
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
 
 body {
     font-family: 'Space Grotesk', sans-serif;
-    background-color: var(--primary-dark);
+    background-color: var(--background-color);
     background-image: url("assets/nick-rickert-dS2L5bKTSaM-unsplash.jpg");
     background-size: cover;
     background-position: center;
@@ -37,7 +38,7 @@ body {
     background: rgba(15, 23, 42, 0.9);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
+    border-radius: var(--border-radius-small);
 }
 
 .hidden {
@@ -47,7 +48,7 @@ body {
 
 button {
     border: none;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
@@ -57,7 +58,7 @@ button {
 #error-container {
     background-color: rgba(255, 126, 95, 0.1);
     border: 1px solid var(--primary);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
     justify-self: center;
     margin-bottom: 2rem;
     padding: 1rem;
@@ -78,18 +79,20 @@ header {
     text-align: left;
     font-weight: 900;
     padding: 1.1rem 1.8rem;
+    width: 100%;
 }
 
 .logo-container {
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 
 .logo {
     margin-right: 10px;
     padding: 1px 4px;
     background-color: var(--primary);
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
     font-size: 20px;
     color: var(--text-dark);
 }
@@ -130,7 +133,7 @@ header {
 .search-container {
     display: flex;
     align-items: center;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
     color: var(--text-grey-dark);
     margin: 3.5rem auto;
     padding-left: 20px;
@@ -178,7 +181,7 @@ input[type="date"] {
     background-color: var(--primary);
     padding: 6px 30px;
     height: 50px;
-    border-radius: 24px;
+    border-radius: var(--border-radius-large);
     min-width: 8%;
     max-width: 600px;
 }
@@ -225,7 +228,7 @@ input[type="date"] {
     max-width: 280px;
     overflow: clip;
     padding: 16px;
-    border-radius: var(--border-radius);
+    border-radius: var(--border-radius-small);
 } 
 
 .trip:hover {
@@ -235,7 +238,7 @@ input[type="date"] {
 .pic-container {
     position: relative;
     overflow: hidden;
-    border-radius: 24px;
+    border-radius: var(--border-radius-large);
     height: 160px;
     width: 100%;
     margin-bottom: 14px;
@@ -302,7 +305,7 @@ body.solid-bg header {
 
 body.solid-bg {
     background-image: none;
-    background-color: var(--primary-dark);
+    background-color: var(--background-color);
 }
 
 .planning-page {
@@ -328,7 +331,7 @@ body.solid-bg {
     padding: 20px;
     background-size: cover;
     background-position: center;
-    border-radius: 24px;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
     overflow: hidden;
     transition: background-size 0.6s ease;
 }
@@ -337,11 +340,15 @@ body.solid-bg {
     background-size: 110%;
 }
 
+.error-banner {
+    background-color: var(--text-grey-light);
+}
+
 .weather-container {
     align-self: flex-start;
     background-color: transparent;
     justify-content: space-between;
-    min-width: 300px;
+    min-width: 280px;
     padding: 24px;
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -350,6 +357,7 @@ body.solid-bg {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    font-size: 16px;
 }
 
 .weather-temp img {
@@ -359,6 +367,7 @@ body.solid-bg {
 .humidity-wind-info {
     display: flex;
     justify-content: space-between;
+    font-size: 14px;
     font-weight: 100;
     padding-top: 20px;
     border-top: 0.5px solid rgba(255, 255, 255, 0.2);
@@ -370,7 +379,6 @@ body.solid-bg {
 }
 
 .results-explore {
-    background-color: #64748B;
     padding: 0 20px 20px 20px;
 }
 
@@ -399,11 +407,60 @@ body.solid-bg {
     margin-right: 7px;
 }
 
-
-.places-container {
+.explore-results {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 2rem;
+}
+
+.place-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-large);
+}
+
+.place-card img{
+    width: 100%;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+}
+
+.place-info {
+    padding: 20px;
+    font-size: 1rem;
+}
+
+.title-rating-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.rating {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--primary);
+}
+
+.rating i {
+    margin-right: 4px;
+}
+
+#add-btn {
+    background-color: rgba(19, 236, 200, 0.1);
+    color: var(--primary);
+    border: 1px solid rgba(19, 236, 200, 0.3);
+    padding: 12px;
+    width: 100%;
+    margin-top: 16px;
+}
+
+#add-btn:hover {
+    background-color: var(--primary);
+    color: var(--text-dark);
+}
+
+#add-btn i {
+    margin-right: 8px;
+    padding: 6px;
 }
 
 .plan {
@@ -425,8 +482,7 @@ h3 i {
 
 #save-plan-btn {
     background: linear-gradient(to right, var(--primary), var(--secondary));
-    color: var(--primary-dark);
-    border-radius: 24px;
+    color: var(--text-dark);
+    border-radius: var(--border-radius-large);
     padding: 16px 60px;
 }
-

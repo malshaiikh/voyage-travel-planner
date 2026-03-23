@@ -1,6 +1,7 @@
 const exploreBtn = document.getElementById("explore-btn");
 const homePage = document.querySelector(".home-page");
 const planPage = document.querySelector(".planning-page");
+const logo = document.querySelector(".logo-container");
 const backBtn = document.getElementById("back-btn");
 const searchInput = document.getElementById("search-input");
 const errorContainer = document.getElementById("error-container");
@@ -12,16 +13,20 @@ searchInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") searchDestination();
 })
 
-backBtn.addEventListener("click", () => {
-    homePage.classList.remove("hidden");
-    planPage.classList.add("hidden");
-    backBtn.classList.add("hidden");
-    document.body.classList.remove('solid-bg')
-})
+logo.addEventListener("click", backHome);
+backBtn.addEventListener("click", backHome);
 
 const UNSPLASH_URL = "https://api.unsplash.com/search/photos?orientation=landscape&per_page=1&query=";
 const OPENSTREETMAP_URL = "https://nominatim.openstreetmap.org/search?q=";
 const OPENWEATHERMAP_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
+
+
+function backHome() {
+    homePage.classList.remove("hidden");
+    planPage.classList.add("hidden");
+    backBtn.classList.add("hidden");
+    document.body.classList.remove('solid-bg');
+}
 
 async function searchDestination() {
     const searchTerm = searchInput.value.trim();
@@ -64,40 +69,52 @@ async function searchDestination() {
 }
 
 async function displayBanner(countryName, addressType) {
-    // fetch destination pic from unsplash api
-    const unsplashResponse = await fetch(`${UNSPLASH_URL}${countryName} ${addressType}&client_id=${UNSPLASH_ACCESS_KEY}`);
-    const unsplashData = await unsplashResponse.json();
+    // fetch destination pic 
+    try {
+        const unsplashResponse = await fetch(`${UNSPLASH_URL}${countryName} ${addressType}&client_id=${UNSPLASH_ACCESS_KEY}`);
+        const unsplashData = await unsplashResponse.json();
+        const pic = unsplashData.results[0].urls.regular;
+        console.log(unsplashData);
 
-    // fetch current weather of the destination
-    const weatherResponse = await fetch(`${OPENWEATHERMAP_URL}${countryName}&appid=${OPENWEATHERMAP_KEY}&units=metric`);
-    const weatherData = await weatherResponse.json();
+        destinationBanner.style.backgroundImage = `url(${pic})`;
+    } catch (error) {
+        console.error("Banner photo error:", error);
+    }
 
-    const temp = weatherData.main.temp;
-    const description = weatherData.weather[0].main;
-    const weatherIcon = weatherData.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
-    const humidity = weatherData.main.humidity;
-    const wind = weatherData.wind.speed;
+    // fetch destination weather 
+    try {
+        const weatherResponse = await fetch(`${OPENWEATHERMAP_URL}${countryName}&appid=${OPENWEATHERMAP_KEY}&units=metric`);
+        const weatherData = await weatherResponse.json();
 
-    console.log(weatherData);
+        const temp = weatherData.main.temp;
+        const description = weatherData.weather[0].main;
+        const weatherIcon = weatherData.weather[0].icon;
+        const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+        const humidity = weatherData.main.humidity;
+        const wind = weatherData.wind.speed;
 
-    destinationBanner.innerHTML = `
-        <h1>${countryName}</h1>
-        <div class="weather-container glass">
-            <div class="weather-temp">
-                <div class="weather-info">
-                    <h1>${temp}°C</h1>
-                    <p>${description}</p>
+        console.log(weatherData);
+
+        destinationBanner.innerHTML = `
+            <h1>${countryName}</h1>
+            <div class="weather-container glass">
+                <div class="weather-temp">
+                    <div class="weather-info">
+                        <h1>${temp}°C</h1>
+                        <p>${description}</p>
+                    </div>
+                    <img src="${iconUrl}" alt="weather-icon">
                 </div>
-                <img src="${iconUrl}" alt="weather-icon">
+                <div class="humidity-wind-info">
+                    <div><i class="fa fa-droplet"></i></i>${humidity}%</div>
+                    <div><i class="fa fa-wind"></i>${wind}km/h</div>
+                </div>
             </div>
-            <div class="humidity-wind-info">
-                <div><i class="fa fa-droplet"></i></i>${humidity}%</div>
-                <div><i class="fa fa-wind"></i>${wind}km/h</div>
-            </div>
-        </div>
-    `;
-    destinationBanner.style.backgroundImage = `url(${unsplashData.results[0].urls.regular})`;
+        `;
+    } catch (error) {
+        console.error("Weather error:", error);
+        destinationBanner.innerHTML = `<div class="error-banner"><h1>${countryName}</h1></div>`;
+    }
 }
 
 
