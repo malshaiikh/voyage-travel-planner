@@ -7,23 +7,21 @@ const errorContainer = document.getElementById("error-container");
 const planningPage = document.querySelector(".planning-page");
 const destinationBanner = document.querySelector(".destination-banner");
 
-// click on explore
 exploreBtn.addEventListener("click", searchDestination);
 searchInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") searchDestination();
 })
 
-// click on back
 backBtn.addEventListener("click", () => {
     homePage.classList.remove("hidden");
     planPage.classList.add("hidden");
     backBtn.classList.add("hidden");
-
     document.body.classList.remove('solid-bg')
 })
 
 const UNSPLASH_URL = "https://api.unsplash.com/search/photos?orientation=landscape&per_page=1&query=";
 const OPENSTREETMAP_URL = "https://nominatim.openstreetmap.org/search?q=";
+const OPENWEATHERMAP_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 
 async function searchDestination() {
     const searchTerm = searchInput.value.trim();
@@ -41,12 +39,10 @@ async function searchDestination() {
             headers: { "Accept-Language": "en"}
         });        
         const geoData = await geoResponse.json();
-        
-        const validPlace = geoData
-            .filter(place => place.type === "administrative")
-            .find(place => place.name.toLowerCase() === searchTerm.toLowerCase());
 
-        console.log(validPlace);
+        const validPlace = geoData
+            .filter(place => place.type === "administrative" || "city")
+            .find(place => place.name.toLowerCase() === searchTerm.toLowerCase());
 
         if (geoData.length === 0 || !validPlace) {
             errorContainer.textContent = `"${searchTerm}" is not a valid destination. Try another.`;
@@ -69,14 +65,39 @@ async function searchDestination() {
 
 async function displayBanner(countryName, addressType) {
     // fetch destination pic from unsplash api
-    const response = await fetch(`${UNSPLASH_URL}${countryName} ${addressType}&client_id=${UNSPLASH_ACCESS_KEY}`);
-    const data = await response.json();
+    const unsplashResponse = await fetch(`${UNSPLASH_URL}${countryName} ${addressType}&client_id=${UNSPLASH_ACCESS_KEY}`);
+    const unsplashData = await unsplashResponse.json();
+
+    // fetch current weather of the destination
+    const weatherResponse = await fetch(`${OPENWEATHERMAP_URL}${countryName}&appid=${OPENWEATHERMAP_KEY}&units=metric`);
+    const weatherData = await weatherResponse.json();
+
+    const temp = weatherData.main.temp;
+    const description = weatherData.weather[0].main;
+    const weatherIcon = weatherData.weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+    const humidity = weatherData.main.humidity;
+    const wind = weatherData.wind.speed;
+
+    console.log(weatherData);
 
     destinationBanner.innerHTML = `
         <h1>${countryName}</h1>
-        <div class="weather">weather</div>
+        <div class="weather-container glass">
+            <div class="weather-temp">
+                <div class="weather-info">
+                    <h1>${temp}°C</h1>
+                    <p>${description}</p>
+                </div>
+                <img src="${iconUrl}" alt="weather-icon">
+            </div>
+            <div class="humidity-wind-info">
+                <div><i class="fa fa-droplet"></i></i>${humidity}%</div>
+                <div><i class="fa fa-wind"></i>${wind}km/h</div>
+            </div>
+        </div>
     `;
-    destinationBanner.style.backgroundImage = `url(${data.results[0].urls.regular})`;
+    destinationBanner.style.backgroundImage = `url(${unsplashData.results[0].urls.regular})`;
 }
 
 
