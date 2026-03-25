@@ -327,21 +327,24 @@ body.solid-bg {
     justify-content: space-between;
     align-items: flex-end;
     height: 260px;
-    margin-bottom: 2rem;
-    padding: 20px;
+    margin-bottom: 32px;
+    padding: 30px;
     background-size: cover;
     background-position: center;
     border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
     overflow: hidden;
     transition: background-size 0.6s ease;
+    mask-image: linear-gradient(180deg,black 70%,transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, black 70%, transparent 100%);
 }
 
 .destination-banner:hover {
     background-size: 110%;
 }
 
-.error-banner {
-    background-color: var(--text-grey-light);
+.country-name {
+    font-size: 3rem;
+    font-weight: 900;
 }
 
 .weather-container {
@@ -351,17 +354,18 @@ body.solid-bg {
     min-width: 280px;
     padding: 24px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-left: 40px;
 }
 
 .weather-temp {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     font-size: 16px;
 }
 
 .weather-temp img {
-    width: 60px;
+    height: 80px;
 }
 
 .humidity-wind-info {
@@ -369,7 +373,7 @@ body.solid-bg {
     justify-content: space-between;
     font-size: 14px;
     font-weight: 100;
-    padding-top: 20px;
+    padding-top: 16px;
     border-top: 0.5px solid rgba(255, 255, 255, 0.2);
 }
 
@@ -384,32 +388,33 @@ body.solid-bg {
 
 .category-tabs {
     display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+    gap: 32px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .category-tabs button {
     font-size: 0.9rem;
-    color: var(--text-white);
+    color: var(--text-grey-light);
     background-color: transparent;
-    color: var(--text-white);
-    padding: 20px 0;
+    padding-bottom: 18px;
     border-radius: 0;
     border-bottom: 2px solid transparent;
+    margin-right: 8px;
 }
 
 .category-tabs button:hover {
+    color: var(--text-white);
+}
+
+.category-tabs button.active {
     color: var(--primary);
     border-bottom: 2px solid var(--primary);
 }
 
-.category-tabs i {
-    margin-right: 7px;
-}
-
-.explore-results {
+.explore-result {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 2rem;
 }
 
@@ -421,12 +426,13 @@ body.solid-bg {
 
 .place-card img{
     width: 100%;
+    height: 240px;
+    object-fit: cover;
     border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
 }
 
 .place-info {
     padding: 20px;
-    font-size: 1rem;
 }
 
 .title-rating-container {
@@ -435,7 +441,7 @@ body.solid-bg {
 }
 
 .rating {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: var(--primary);
 }
@@ -444,23 +450,23 @@ body.solid-bg {
     margin-right: 4px;
 }
 
-#add-btn {
+.add-btn {
     background-color: rgba(19, 236, 200, 0.1);
     color: var(--primary);
     border: 1px solid rgba(19, 236, 200, 0.3);
     padding: 12px;
     width: 100%;
     margin-top: 16px;
+    box-shadow: 0 0 10px rgba(19, 236, 200, 0.3);
 }
 
-#add-btn:hover {
+.add-btn:hover {
     background-color: var(--primary);
     color: var(--text-dark);
 }
 
-#add-btn i {
+.add-btn i {
     margin-right: 8px;
-    padding: 6px;
 }
 
 .plan {
