@@ -19,6 +19,9 @@ const OPENWEATHERMAP_URL = "https://api.openweathermap.org/data/2.5/weather?q=";
 const OPENTRIPMAP_URL = "https://api.opentripmap.com/0.1/en/places/";
 const PLACE_INFO_URL = `https://api.opentripmap.com/0.1/en/places/xid/`;
 
+let currentBBox = null;
+let currentRequest = 0;
+
 exploreBtn.addEventListener("click", searchDestination);
 searchInput.addEventListener("keypress", (e) => {
     if (e.key === "Enter") searchDestination();
@@ -27,7 +30,6 @@ searchInput.addEventListener("keypress", (e) => {
 logo.addEventListener("click", backHome);
 backBtn.addEventListener("click", backHome);
 
-let currentBBox = null;
 categoryTabs.forEach(tab => {
     tab.addEventListener("click", () => {
         categoryTabs.forEach(t => t.classList.remove("active"));
@@ -142,41 +144,65 @@ async function displayBanner(countryName) {
     }
 }
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 async function displayPlaces(bbox, kind) {
-    // fetch places
+    currentRequest++;
+    const thisRequest = currentRequest;
+
     try {
-        const response = await fetch(`${OPENTRIPMAP_URL}bbox?lon_min=${bbox[2]}&lat_min=${bbox[0]}&lon_max=${bbox[3]}&lat_max=${bbox[1]}&kinds=${kind}&limit=6&apikey=${OPENTRIPMAP_KEY}`);
+        const response = await fetch(`${OPENTRIPMAP_URL}bbox?lon_min=${bbox[2]}&lat_min=${bbox[0]}&lon_max=${bbox[3]}&lat_max=${bbox[1]}&kinds=${kind}&limit=20&apikey=${OPENTRIPMAP_KEY}`);
         const places = await response.json();
         console.log("places data", places);
 
         if (places) {
             exploreResult.innerHTML = "";
 
-            places.features.forEach((place) => displayPlaceCard(place));
-        } else {
-            console.log("No places is found for this destination");
+            // fetch all places details
+            const placesDetails = [];
+            for (const place of places.features) {
+
+                // if a newer request started, stop this loop
+                if (thisRequest !== currentRequest) return;
+
+                const xid = place.id;
+                const detailsResponse = await fetch(`${PLACE_INFO_URL}${xid}?apikey=${OPENTRIPMAP_KEY}`);
+                const details = await detailsResponse.json();
+
+                placesDetails.push({place, details});
+                await delay(50);
+            }
+
+            // check request again
+            if (thisRequest !== currentRequest) return;
+
+            // remove duplicate places using wikidata ID
+            const seen = new Set();
+            const uniquePlaces = placesDetails.filter(({place, details}) => {
+                const key = details.wikidata;
+                if (seen.has(key)) return false;
+                seen.add(key);
+                return true;
+            })
+
+            uniquePlaces.forEach(({place, details}) => displayPlaceCard(place, details));  
         }
     } catch (error) {
         console.error("Places error:", error);
     }
 }
 
-async function displayPlaceCard(place) {
+function displayPlaceCard(place, details) {
     const placeName = place.properties.name;
     const rating = place.properties.rate;
-    const xid = place.id;
-
-    const detailsResponse = await fetch(`${PLACE_INFO_URL}${xid}?apikey=${OPENTRIPMAP_KEY}`);
-    const details = await detailsResponse.json();
-    console.log("place data", details);
-
-    const placePicUrl = details.preview?.source;
-    // const description = details.wikipedia_extracts.text;
+    const placePicUrl = details.preview?.source || 'assets/image-placeholder.svg';
+    const descriptionHTML = details.wikipedia_extracts.html ?? '';
 
     exploreResult.innerHTML += `
         <div class="place-card glass">
-            <img src="${placePicUrl}" alt="place picture" onerror="this.src='assets/image-placeholder.svg'">
-            <div class="place-info">
+            <img src="${placePicUrl}" alt="place picture" onerror="this.src='assets/image-placeholder.svg'">            <div class="place-info">
                 <div class="title-rating-container">
                     <h3>${placeName}</h3>
                     <div class="rating"><i class="fa-regular fa-star"></i>${rating}</div>
