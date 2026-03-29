@@ -262,7 +262,7 @@ input[type="date"] {
     top: 10px;
     right: 10px;
     background: rgb(215, 88, 88);
-    border-radius: 20px;
+    border-radius: 50%;;
     height: 30px;
     width: 30px;
     font-size: 14px;
@@ -422,6 +422,7 @@ body.solid-bg {
     background-color: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius-large);
+    cursor: pointer;
 }
 
 .place-card img{
@@ -441,7 +442,7 @@ body.solid-bg {
 }
 
 .rating {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 500;
     color: var(--primary);
 }
@@ -454,7 +455,7 @@ body.solid-bg {
     background-color: rgba(19, 236, 200, 0.1);
     color: var(--primary);
     border: 1px solid rgba(19, 236, 200, 0.3);
-    padding: 12px;
+    padding: 12px 0;
     width: 100%;
     margin-top: 16px;
     box-shadow: 0 0 10px rgba(19, 236, 200, 0.3);
@@ -469,13 +470,163 @@ body.solid-bg {
     margin-right: 8px;
 }
 
+/* details modal */
+
+#details-overlay {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.details-modal {
+    display: flex;
+    flex-direction: column;
+    margin: 5% auto;
+    border: 1px solid rgba(19, 236, 200, 0.2);
+    border-radius: var(--border-radius-large);
+    background-color: var(--background-color);
+    width: 40%;
+    max-height: 85vh;
+    text-align: left;
+}
+
+.details-modal .place-pic {
+    position: relative;
+}
+
+#close-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 12px;
+    color: white;
+    padding: 10px 6px;
+    text-align: center;
+    border-radius: var(--border-radius-large);
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 200;
+    cursor: pointer;
+}
+
+#close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.details-modal img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    border-radius: var(--border-radius-large) var(--border-radius-large) 0 0;
+    mask-image: linear-gradient(180deg, black 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, black 70%, transparent 100%);
+}
+
+.details-modal .place-info {
+    padding: 16px 40px;
+    overflow-wrap: break-word;
+    white-space: normal;
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-color: rgba(70, 241, 197, 0.1) transparent;
+}
+
+.details-modal .rating {
+    background-color: rgba(70, 241, 197, 0.1);
+    border: 1px solid rgba(70, 241, 197, 0.1);
+    border-radius: var(--border-radius-large);
+    padding: 4px 12px;
+    height: fit-content;
+}
+
+.details-modal h4{
+    font-size: 30px;
+}
+
+.address {
+    color: var(--text-grey-light);
+    font-size: 14px;
+}
+
+.address i {
+    margin-right: 6px;
+}
+
+.kinds {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin-top: 16px;
+    gap: 8px;
+}
+
+.kind-badge {
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.1px;
+    color: var(--primary);
+    background-color: rgba(70, 241, 197, 0.1);
+    border: 1px solid rgba(70, 241, 197, 0.2);
+    border-radius: var(--border-radius-large);
+}
+
+.kind-badge.active-kind {
+    color: var(--secondary);
+    background-color: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.desc {
+    font-size: 18px;
+    font-weight: 300;
+    margin-top: 24px;
+    color: var(--text-light);
+}
+
+.details-modal .add-btn {
+    display: flex;
+    justify-content: center;
+    width: auto;
+    margin: 0 32px 32px 32px;
+    color: var(--text-dark);
+    background-color: var(--primary);
+    transition: var(--transition);
+    gap: 8px;
+}
+
+.details-modal .add-btn:hover{
+    transform: scale(1.03);
+    gap: 10px;
+}
+
+/* Plan Container */
+
 .plan {
+    display: flex;
+    flex-direction: column;
     flex: 1;
-    padding: 20px;
+    padding: 24px;
+    gap: 24px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-large);
 }
 
 .trip-schedule {
-    padding: 0 20px 20px 20px;}
+    padding: 0 20px 20px 20px;
+}
+
+.unassigned {
+    font-size: 12;
+    font-weight: bold;
+    color: var(--text-grey-dark);
+}
 
 .packing-list {
     padding: 20px;

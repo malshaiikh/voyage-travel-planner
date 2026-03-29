@@ -74,17 +74,17 @@
             <div class="destination-banner"></div>
             <div class="results-explore">
                 <div class="category-tabs">
-                    <button data-kind="interesting_places" class="active">
+                    <button data-kind="interesting_places" data-label="interesting_places" class="active">
                         <i class="fas fa-archway"></i> Attractions
                     </button>
-                    <button data-kind="museums">
+                    <button data-kind="museums" data-label="museums">
                         <i class="fas fa-building-columns"></i> Museums
                     </button>
-                    <button data-kind="restaurants,cafes">
-                        <i class="fas fa-utensils"></i> Restaurants
+                    <button data-kind="restaurants,cafes" data-label="food">
+                        <i class="fas fa-utensils"></i> Food
                     </button>
-                    <button data-kind="shops,malls">
-                        <i class="fas fa-bag-shopping"></i> Shopping
+                    <button data-kind="shops,malls" data-label="shops">
+                        <i class="fas fa-bag-shopping"></i> Shops
                     </button>
                 </div>
                 <div class="explore-result"></div>
@@ -112,6 +112,11 @@
             <button id="save-plan-btn"><i class="fa-regular fa-map"></i> Generate Itinerary</button>
         </div>
     </div>
+
+    <div id="details-overlay" class="hidden">
+        <div class="details-modal"></div>
+    </div>
+
     <script src="config.js"></script>  
     <script src="script.js"></script>
 </body>
