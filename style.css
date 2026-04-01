@@ -17,7 +17,6 @@
     --red : rgb(215, 88, 88);
     --border-radius-small: 16px;
     --border-radius-large: 24px;
-    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
 }
 
@@ -80,7 +79,7 @@ header {
     justify-content: space-between;
     text-align: left;
     font-weight: 900;
-    padding: 1.1rem 1.8rem;
+    padding: 1rem 1.8rem;
     width: 100%;
 }
 
@@ -467,6 +466,11 @@ body.solid-bg {
     box-shadow: 0 0 10px rgba(19, 236, 200, 0.3);
 }
 
+.add-btn.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .add-btn:hover {
     background-color: var(--primary);
     color: var(--text-dark);
@@ -646,11 +650,30 @@ body.solid-bg {
     font-size: 12px;
 }
 
-.unassigned-places h4 {
-    font-size: 12;
+#clear-btn:hover {
+    text-decoration: underline;
+}
+
+#unassigned-places h4 {
+    font-size: 12px;
     font-weight: bold;
+    letter-spacing: 0.6px;
     color: var(--text-grey-dark);
     margin-bottom: 12px;
+}
+
+#unassigned-places .empty-msg {
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius-small);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    font-size: 14px;
 }
 
 .plan-card {
@@ -676,12 +699,17 @@ body.solid-bg {
     margin-left: auto;
 }
 
-.unassigned-places .delete-place-btn {
-    opacity: 0;
-}
-
 .delete-place-btn:hover {
     color: var(--red);
+}
+
+#unassigned-places .delete-place-btn {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#unassigned-places .plan-card:hover .delete-place-btn {
+    opacity: 1;
 }
 
 .plan-card img {
@@ -811,13 +839,22 @@ label {
     background-color: rgba(19, 236, 200, 0.3);
 }
 
+#add-task-btn:hover {
+    color: var(--background-color);
+    background-color: var(--primary);
+}
+
 #save-plan-btn {
     background: linear-gradient(to right, var(--primary), var(--secondary));
     color: var(--text-dark);
     border-radius: var(--border-radius-large);
     padding: 16px 60px;
+    box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
 }
 
+#save-plan-btn:hover {
+    opacity: 0.7;
+}
 
 @media (max-width: 800px) {
     .planning-page {

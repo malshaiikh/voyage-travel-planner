@@ -13,6 +13,7 @@ const exploreResult = document.querySelector(".explore-result");
 const addBtn = document.getElementById("add-btn");
 const detailsOverlay = document.getElementById("details-overlay");
 const detailsModal = detailsOverlay.querySelector(".details-modal");
+const unassignedPlaces = document.getElementById("unassigned-places");
 
 // URLs
 const UNSPLASH_URL = "https://api.unsplash.com/search/photos?orientation=landscape&per_page=1&query=";
@@ -23,6 +24,7 @@ const PLACE_INFO_URL = `https://api.opentripmap.com/0.1/en/places/xid/`;
 
 let currentBBox = null;
 let currentRequest = 0;
+const addedPlaces = new Set();
 
 exploreBtn.addEventListener("click", searchDestination);
 searchInput.addEventListener("keypress", (e) => {
@@ -202,6 +204,7 @@ async function displayPlaces(bbox, kind) {
 }
 
 function displayPlaceCard(place, details) {
+    const xid = place.properties.xid;
     const placeName = place.properties.name;
     const rating = place.properties.rate;
     const placePicUrl = details.preview?.source || 'assets/image-placeholder.svg';
@@ -209,6 +212,7 @@ function displayPlaceCard(place, details) {
 
     const placeCard = document.createElement("div");
     placeCard.classList.add("place-card", "glass");
+    placeCard.dataset.xid = xid;
     placeCard.dataset.img = placePicUrl;
     placeCard.dataset.name = placeName;
     placeCard.dataset.rating = rating;
@@ -226,37 +230,29 @@ function displayPlaceCard(place, details) {
             <button class="add-btn"><i class="fa fa-circle-plus"></i>Add to Trip</button>
         </div>
     `;
+    exploreResult.appendChild(placeCard);
+
+    const addButton = placeCard.querySelector(".add-btn");
+    addButton.addEventListener("click", (event) => {
+        event.stopPropagation(); 
+        addPlace(xid, placePicUrl, placeName); 
+    });
 
     placeCard.addEventListener("click", showDetails);
-    exploreResult.appendChild(placeCard);
 }
 
 function showDetails(event) {
     detailsOverlay.classList.remove("hidden");
 
     const card = event.currentTarget;
+    const xid = card.dataset.xid;
     const img = card.dataset.img;
     const name = card.dataset.name;
     const rating = card.dataset.rating;
     const address = card.dataset.address;
-    const kinds = card.dataset.kinds;
     const description = card.dataset.description;
-    console.log("card clicked", name);
-
-    kindsArray = kinds.split(",");
-    const selectedKind = document.querySelector(".category-tabs .active").dataset.label;
-    const kindsBadges = kindsArray.map(kind => {
-        const isActive = kind === selectedKind;
-
-        if (kind === "interesting_places") {
-            kind = "attractions";
-        } 
-        if (kind.includes("_")) {
-            kind = kind.split("_").join(" ");
-        }
-
-        return `<span class="kind-badge ${isActive ? "active-kind" : ""}">${kind.toUpperCase()}</span>`
-    }).join("");
+    const kinds = card.dataset.kinds;
+    const kindsBadges = generateKindsBadges(kinds);
 
     detailsModal.innerHTML = `
         <div class="place-pic">
@@ -278,4 +274,91 @@ function showDetails(event) {
     document.getElementById("close-btn").addEventListener("click", () => {
         detailsOverlay.classList.add("hidden");
     });
+
+    const addButton = detailsModal.querySelector(".add-btn");
+    addButton.addEventListener("click", () => {
+        addPlace(xid, img, name);
+        detailsOverlay.classList.add("hidden");
+    });
+
+    // disable add button if added
+    const isAdded = addedPlaces.has(xid);
+    if (isAdded) {
+        addButton.innerHTML = `<i class="fa fa-check"></i> Added`;
+        addButton.disabled = true;
+        addButton.style.opacity = "0.5";
+    } 
+}
+
+function generateKindsBadges(kinds) {
+    const kindsArray = kinds.split(",");
+    const selectedKind = document.querySelector(".category-tabs .active").dataset.label;
+
+    return kindsArray.map(kind => {
+        const isActive = kind === selectedKind;
+
+        if (kind === "interesting_places") {
+            kind = "attractions";
+        }
+
+        if (kind.includes("_")) {
+            kind = kind.replaceAll("_", " ");
+        }
+
+        return `
+            <span class="kind-badge ${isActive ? "active-kind" : ""}">
+                ${kind.toUpperCase()}
+            </span>
+        `;
+    }).join("");
+}
+
+function addPlace(xid, placePicUrl, placeName) {
+    // remove empty message if it exists
+    const emptyMsg = document.querySelector("#unassigned-places .empty-msg");
+    if (emptyMsg) emptyMsg.remove();
+
+    // create new card
+    const planCard = document.createElement("div");
+    planCard.classList.add("plan-card");
+    planCard.innerHTML = `
+        <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
+        <img src="${placePicUrl}" alt="place image" onerror="this.src='assets/image-placeholder.svg'">
+        <p class="place-name">${placeName}</p>
+        <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
+    `;
+    unassignedPlaces.appendChild(planCard);
+
+    // mark place card as added
+    addedPlaces.add(xid);
+    updateAddButton(xid);
+
+    // handle delete 
+    const deleteBtn = planCard.querySelector(".delete-place-btn");
+    deleteBtn.addEventListener("click", () => {
+        planCard.remove();
+        addedPlaces.delete(xid);
+        updateAddButton(xid);
+        updateEmptyMsg(); // if no more cards, add empty msg
+    });
+}
+
+function updateEmptyMsg() {
+    if (unassignedPlaces.querySelectorAll(".plan-card").length === 0) {
+        const msg = document.createElement("p");
+        msg.classList.add("empty-msg");
+        msg.textContent = "No places added yet";
+        unassignedPlaces.appendChild(msg);
+    }
+}
+
+function updateAddButton(xid) {
+    const isAdded = addedPlaces.has(xid);
+
+    const placeCard = document.querySelector(`.place-card[data-xid="${xid}"]`);
+    const cardBtn = placeCard?.querySelector(".add-btn");
+    if (cardBtn) {
+        cardBtn.innerHTML = isAdded ? `<i class="fa fa-check"></i> Added` : `<i class="fa fa-circle-plus"></i> Add to Trip`;
+        cardBtn.disabled = isAdded;
+    }
 }
