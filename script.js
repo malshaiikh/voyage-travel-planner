@@ -170,35 +170,31 @@ async function displayPlaces(bbox, kind) {
         if (places) {
             exploreResult.innerHTML = "";
 
-            // fetch all places details
-            const placesDetails = [];
-            for (const place of places.features) {
-
-                // if a newer request started, stop this loop
-                if (thisRequest !== currentRequest) return;
-
-                const xid = place.id;
-                const detailsResponse = await fetch(`${PLACE_INFO_URL}${xid}?apikey=${OPENTRIPMAP_KEY}`);
-                const details = await detailsResponse.json();
-
-                placesDetails.push({place, details});
-                await delay(60);
-            }
-
-            // check request again
-            if (thisRequest !== currentRequest) return;
-
             // remove duplicate places using wikidata ID
             const seen = new Set();
-            const uniquePlaces = placesDetails.filter(({place, details}) => {
-                const key = details.wikidata;
+            const uniquePlaces = places.features.filter((place) => {
+                const key =  place.properties.wikidata || place.properties.xid;
                 if (seen.has(key)) return false;
                 seen.add(key);
                 return true;
             })
-            console.log(uniquePlaces);
 
-            uniquePlaces.forEach(({place, details}) => displayPlaceCard(place, details));  
+            // fetch all places details
+            const placesDetails = [];
+            for (const place of uniquePlaces) {
+                // if a newer request started, stop this loop
+                if (thisRequest !== currentRequest) return;
+
+                const xid = place.properties.xid;
+                const detailsResponse = await fetch(`${PLACE_INFO_URL}${xid}?apikey=${OPENTRIPMAP_KEY}`);
+                const details = await detailsResponse.json();
+
+                placesDetails.push({ place, details });
+                await delay(60);
+            }
+            console.log(placesDetails);
+
+            placesDetails.forEach(({place, details}) => displayPlaceCard(place, details));  
         }
     } catch (error) {
         console.error("Places error:", error);

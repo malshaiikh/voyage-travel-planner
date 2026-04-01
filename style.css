@@ -14,6 +14,7 @@
     --text-grey-light: #94A3B8;
     --text-light: #CBD5E1;
     --text-white: #ffffff;
+    --red : rgb(215, 88, 88);
     --border-radius-small: 16px;
     --border-radius-large: 24px;
     --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -53,6 +54,7 @@ button {
     font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
+    background-color: transparent;
 }
 
 #error-container {
@@ -153,13 +155,13 @@ header {
     border-right: 1px solid var(--text-grey-dark);
 }
 
-#search-input:focus {
+input:focus {
     outline: none;
 }
 
-#search-input:-webkit-autofill,
-#search-input:-webkit-autofill:hover,
-#search-input:-webkit-autofill:focus {
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0px 1000px transparent inset;
     -webkit-text-fill-color: var(--text-white);
     transition: background-color 5000s ease-in-out 0s;
@@ -261,7 +263,7 @@ input[type="date"] {
     position: absolute;
     top: 10px;
     right: 10px;
-    background: rgb(215, 88, 88);
+    background: var(--red);
     border-radius: 50%;;
     height: 30px;
     width: 30px;
@@ -451,6 +453,10 @@ body.solid-bg {
     margin-right: 4px;
 }
 
+.place-card .rating i {
+    color: var(--primary);
+}
+
 .add-btn {
     background-color: rgba(19, 236, 200, 0.1);
     color: var(--primary);
@@ -483,9 +489,12 @@ body.solid-bg {
 }
 
 .details-modal {
+    position: fixed;
     display: flex;
     flex-direction: column;
-    margin: 5% auto;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     border: 1px solid rgba(19, 236, 200, 0.2);
     border-radius: var(--border-radius-large);
     background-color: var(--background-color);
@@ -613,28 +622,193 @@ body.solid-bg {
     flex: 1;
     padding: 24px;
     gap: 24px;
+    height: max-content;
     background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: var(--border-radius-large);
 }
 
-.trip-schedule {
-    padding: 0 20px 20px 20px;
+.plan-header {
+    display: flex;
+    justify-content: space-between;
 }
 
-.unassigned {
+.plan-header h3 {
+    font-size: 20px;
+}
+
+.plan-header i {
+    color: var(--secondary);
+}
+
+#clear-btn {
+    color: var(--primary);
+    font-size: 12px;
+}
+
+.unassigned-places h4 {
     font-size: 12;
     font-weight: bold;
     color: var(--text-grey-dark);
+    margin-bottom: 12px;
 }
 
-.packing-list {
-    padding: 20px;
+.plan-card {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    gap: 8px;
+    margin-bottom: 8px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-small);
 }
 
-h3 i {
+.plan-card:hover {
+    background-color: rgba(255, 255, 255, 0.1)
+}
+
+.plan-card button{
+    color: var(--text-grey-dark);
+}
+
+.delete-place-btn {
+    margin-left: auto;
+}
+
+.unassigned-places .delete-place-btn {
+    opacity: 0;
+}
+
+.delete-place-btn:hover {
+    color: var(--red);
+}
+
+.plan-card img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.plan-card .place-name {
+    font-size: 14px;
+}
+
+.days-plan {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.day-container {
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.day-header {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 12px 12px 0 0 ;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.day-header .closed {
+    border-radius: 12px;
+}
+
+.day-header h3 {
+   font-size: 14px; 
+}
+
+.day-header span {
+    color: var(--text-grey-dark);
+    font-size: 10px;
+    margin-left: 8px;
+}
+
+.day-toggle {
+    margin-left: auto;
+    color: var(--text-grey-light);
+}
+
+.day-places-container {
+    padding: 12px;
+}
+
+#packing-list {
+    display:flex;
+    flex-direction: column;
+    gap: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 24px;
+}
+
+#packing-list h4 i {
     color: var(--secondary);
     margin-right: 7px;
+}
+
+.checkbox-container {
+    margin-bottom: 8px;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--primary);
+}
+
+input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 9px;
+    border-bottom: 3px solid white;
+    border-right: 3px solid white;
+    transform: translate(-50%, -60%) rotate(45deg);
+    top: 50%;
+    left: 50%;
+}
+
+label {
+    margin-left: 12px;
+    color: var(--text-grey-dark);
+    cursor: pointer;
+}
+
+.task-insertion {
+    display: flex;
+    gap: 8px;
+}
+
+#task-input {
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: none;
+    border: 1px soild rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius-small);
+    padding: 14px 12px;
+    color: var(--text-white);
+}
+
+#add-task-btn {
+    padding: 8px;
+    border-radius: var(--border-radius-small);
+    color: var(--primary);
+    background-color: rgba(19, 236, 200, 0.3);
 }
 
 #save-plan-btn {
@@ -642,4 +816,11 @@ h3 i {
     color: var(--text-dark);
     border-radius: var(--border-radius-large);
     padding: 16px 60px;
+}
+
+
+@media (max-width: 800px) {
+    .planning-page {
+        flex-direction: column;
+    }
 }

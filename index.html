@@ -80,8 +80,8 @@
                     <button data-kind="museums" data-label="museums">
                         <i class="fas fa-building-columns"></i> Museums
                     </button>
-                    <button data-kind="restaurants,cafes" data-label="food">
-                        <i class="fas fa-utensils"></i> Food
+                    <button data-kind="restaurants,cafes" data-label="foods">
+                        <i class="fas fa-utensils"></i> Foods
                     </button>
                     <button data-kind="shops,malls" data-label="shops">
                         <i class="fas fa-bag-shopping"></i> Shops
@@ -91,18 +91,55 @@
             </div>
         </div>
         <div class="plan">
-            <div class="trip-schedule">
+            <div class="plan-header">
                 <h3><i class="fa-regular fa-calendar"></i>Trip Schedule</h3>
-                <div class="unassigned">UNASSIGNED</div>
-                <div class="day-plan">day1</div>
-                <div class="day-plan">day2</div>
-                <div class="day-plan">day3</div>
+                <button id="clear-btn">Clear All</button>
             </div>
-            <hr>
-            <div class="packing-list">
-                <h3><i class="fa-solid fa-list-check"></i>Packing List</h3>
-                <input type="checkbox" id="task">
-                <label for="task">Passport & Visa</label>
+            <div class="unassigned-places">
+                <h4>UNASSIGNED</h4>
+                <div class="plan-card">
+                    <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
+                    <img src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="place image">
+                    <p class="place-name">Place Name</p>
+                    <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
+                </div>
+            </div>
+            <div class="days-plan">
+                <div class="day-container">
+                    <div class="day-header">
+                        <h3>Day 1</h3>
+                        <span>May 12</span>
+                        <button class="day-toggle"><i class="fa-solid fa-chevron-up"></i></button>
+                    </div>
+                    <div class="day-places-container">
+                        <div class="plan-card">
+                            <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
+                            <img src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="place image">
+                            <p class="place-name">Place Name</p>
+                            <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
+                        </div>
+                        <div class="plan-card">
+                            <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
+                            <img src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="place image">
+                            <p class="place-name">Place Name</p>
+                            <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="day-plan">
+                    <div class="day-header">
+                        <h3>Day 2</h3>
+                        <span>May 12</span>
+                        <button class="day-toggle"><i class="fa-solid fa-chevron-down"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div id="packing-list">
+                <h4><i class="fa-solid fa-list-check"></i>Packing List</h4>
+                <div class="checkbox-container">
+                    <input type="checkbox" id="task">
+                    <label for="task">Passport & Visa</label>
+                </div>
                 <div class="task-insertion">
                     <input type="text" id="task-input" placeholder="Add item...">
                     <button id="add-task-btn"><i class="fa-solid fa-plus"></i></button>
