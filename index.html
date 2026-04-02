@@ -11,6 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 </head>
 <body>
     <header>
@@ -28,17 +30,10 @@
         <div class="search-container glass">
             <i class="fas fa-location-dot"></i>
             <input type="text" id="search-input" placeholder="Search for city or country">
-            <i class="fa-regular fa-calendar"></i>
-            <div class="calender-picker">
-                <label for="start-date">FROM</label>
-                <input type="date" name="start-date" id="start-date">
-            </div>
-            <hr>
-            <i class="fa-regular fa-calendar"></i>
-            <div class="calender-picker">
-                <label for="end-date">TO</label>
-                <input type="date" name="end-date" id="end-date">
-            </div>
+            <id id="date-picker-container">
+                <i class="fa-regular fa-calendar"></i>
+                <input type="text" id="date-range" placeholder="Select dates">
+            </id>
             <button id="explore-btn">Explore <i class="fa-solid fa-arrow-right"></i></button>
         </div>
         <div id="error-container" class="hidden">
@@ -99,36 +94,7 @@
                 <h4>UNASSIGNED</h4>
                 <p class="empty-msg">No places added yet</p>
             </div>
-            <div id="days-plan">
-                <div class="day-container">
-                    <div class="day-header">
-                        <h3>Day 1</h3>
-                        <span>May 12</span>
-                        <button class="day-toggle"><i class="fa-solid fa-chevron-up"></i></button>
-                    </div>
-                    <div class="day-places-container">
-                        <div class="plan-card">
-                            <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
-                            <img src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="place image">
-                            <p class="place-name">Place Name</p>
-                            <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
-                        </div>
-                        <div class="plan-card">
-                            <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
-                            <img src="assets/michael-worden-TomHMvzU4jQ-unsplash.jpg" alt="place image">
-                            <p class="place-name">Place Name</p>
-                            <button class="delete-place-btn"><i class="fa-regular fa-trash-can"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="day-plan">
-                    <div class="day-header">
-                        <h3>Day 2</h3>
-                        <span>May 12</span>
-                        <button class="day-toggle"><i class="fa-solid fa-chevron-down"></i></button>
-                    </div>
-                </div>
-            </div>
+            <div id="days-plan"></div>
             <div id="packing-list">
                 <h4><i class="fa-solid fa-list-check"></i>Packing List</h4>
                 <div class="checkbox-container">

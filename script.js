@@ -1,4 +1,5 @@
 // DOM Elements
+const datePickerContainer = document.getElementById("date-picker-container");
 const exploreBtn = document.getElementById("explore-btn");
 const homePage = document.querySelector(".home-page");
 const planPage = document.querySelector(".planning-page");
@@ -14,6 +15,7 @@ const addBtn = document.getElementById("add-btn");
 const detailsOverlay = document.getElementById("details-overlay");
 const detailsModal = detailsOverlay.querySelector(".details-modal");
 const unassignedPlaces = document.getElementById("unassigned-places");
+const daysPlan = document.getElementById("days-plan");
 
 // URLs
 const UNSPLASH_URL = "https://api.unsplash.com/search/photos?orientation=landscape&per_page=1&query=";
@@ -25,6 +27,15 @@ const PLACE_INFO_URL = `https://api.opentripmap.com/0.1/en/places/xid/`;
 let currentBBox = null;
 let currentRequest = 0;
 const addedPlaces = new Set();
+
+const datePicker = flatpickr("#date-range", {
+    mode: "range",
+    minDate: "today",
+    dateFormat: "M d",
+    locale: { rangeSeparator: " – "}
+});
+
+datePickerContainer.addEventListener("click", () => datePicker.open());
 
 exploreBtn.addEventListener("click", searchDestination);
 searchInput.addEventListener("keypress", (e) => {
@@ -50,6 +61,25 @@ detailsOverlay.addEventListener("click", (event) => {
     }
 })
 
+unassignedPlaces.addEventListener('dragover', (e) => {
+    e.preventDefault();
+});
+
+unassignedPlaces.addEventListener("drop", (e) => {
+    e.preventDefault();
+    const data = e.dataTransfer.getData("text/plain");
+    const draggedElement = document.getElementById(data);
+    const oldDay = draggedElement.parentElement;
+
+    unassignedPlaces.appendChild(draggedElement);
+    updateUnnassignedEmptyMsg();
+    updateDayEmptyMsg(oldDay);
+});
+
+function dragstartHandler(e) {
+    e.dataTransfer.setData("text/plain", e.target.id);
+}
+
 function backHome() {
     homePage.classList.remove("hidden");
     planPage.classList.add("hidden");
@@ -63,18 +93,45 @@ function backHome() {
     planningPage.innerHTML = "";
 }
 
+function getTripDates() {
+    const dates = datePicker.selectedDates;
+
+    if (dates.length < 2) {
+        return null;
+    }
+
+    const [startDate, endDate] = dates;
+    const totalDays = ((endDate - startDate) / 1000 / 60 / 60 / 24) + 1;
+    return { startDate, endDate, totalDays };
+}
+
+function validateInputs(searchTerm, tripDates) {
+    if (!searchTerm || !tripDates) {
+        if (!searchTerm && !tripDates) {
+            return "Please enter a destination and select dates.";
+        } else if (!searchTerm) {
+            return "Please enter a destination.";
+        } else {
+            return "Please select the trip dates.";
+        }
+    }
+    return null;
+}
+
 async function searchDestination() {
     const searchTerm = searchInput.value.trim();
+    const tripDates = getTripDates();
 
-    // empty input case
-    if (!searchTerm) {
-        errorContainer.textContent = "Please enter a destination.";
+    // check if destintaion or dates is empty
+    const error = validateInputs(searchTerm, tripDates);
+    if (error) {
+        errorContainer.textContent = error;
         errorContainer.classList.remove("hidden");
         return;
     }
 
+    // validate destination
     try {
-        // validate destination
         const geoResponse = await fetch(`${OPENSTREETMAP_URL}${searchTerm}&format=json`, {
             headers: { "Accept-Language": "en"}
         });        
@@ -101,6 +158,7 @@ async function searchDestination() {
             currentBBox = validPlace.boundingbox;
             displayBanner(validPlace.name);
             displayPlaces(currentBBox, "interesting_places");
+            generateDaysCards(tripDates.startDate, tripDates.totalDays);
         }
     } catch (error) {
         errorContainer.textContent = "Something went wrong. Please try again later.";
@@ -315,12 +373,16 @@ function generateKindsBadges(kinds) {
 
 function addPlace(xid, placePicUrl, placeName) {
     // remove empty message if it exists
-    const emptyMsg = document.querySelector("#unassigned-places .empty-msg");
+    const emptyMsg = unassignedPlaces.querySelector(".empty-msg");
     if (emptyMsg) emptyMsg.remove();
 
     // create new card
     const planCard = document.createElement("div");
     planCard.classList.add("plan-card");
+    planCard.id = xid; 
+    planCard.draggable = true;
+    planCard.addEventListener("dragstart", dragstartHandler);
+    
     planCard.innerHTML = `
         <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
         <img src="${placePicUrl}" alt="place image" onerror="this.src='assets/image-placeholder.svg'">
@@ -336,19 +398,30 @@ function addPlace(xid, placePicUrl, placeName) {
     // handle delete 
     const deleteBtn = planCard.querySelector(".delete-place-btn");
     deleteBtn.addEventListener("click", () => {
+        const parent = planCard.parentElement;
+
         planCard.remove();
         addedPlaces.delete(xid);
         updateAddButton(xid);
-        updateEmptyMsg(); // if no more cards, add empty msg
+
+        // if no more cards, add empty msg
+        updateUnnassignedEmptyMsg();
+        updateDayEmptyMsg(parent);
     });
 }
 
-function updateEmptyMsg() {
+function updateUnnassignedEmptyMsg() {
+    const emptyMsg = unassignedPlaces.querySelector(".empty-msg");
+
     if (unassignedPlaces.querySelectorAll(".plan-card").length === 0) {
-        const msg = document.createElement("p");
-        msg.classList.add("empty-msg");
-        msg.textContent = "No places added yet";
-        unassignedPlaces.appendChild(msg);
+        if (!emptyMsg) {
+            const msg = document.createElement("p");
+            msg.classList.add("empty-msg");
+            msg.textContent = "No places added yet";
+            unassignedPlaces.appendChild(msg);
+        }
+    } else {
+        if (emptyMsg) emptyMsg.remove();
     }
 }
 
@@ -360,5 +433,77 @@ function updateAddButton(xid) {
     if (cardBtn) {
         cardBtn.innerHTML = isAdded ? `<i class="fa fa-check"></i> Added` : `<i class="fa fa-circle-plus"></i> Add to Trip`;
         cardBtn.disabled = isAdded;
+    }
+}
+
+function generateDaysCards(startDate, totalDays) {
+    daysPlan.innerHTML = "";
+
+    for (let i = 0; i < totalDays; i++) {
+        const date = new Date(startDate);
+        date.setDate(date.getDate() + i);
+        const dayDate = date.toLocaleDateString('en-US', {
+            month: 'short', 
+            day: 'numeric' 
+        });
+
+        const dayContainer = document.createElement("div");
+        dayContainer.classList.add("day-container");
+
+        const dayHeader = document.createElement("div");
+        dayHeader.classList.add("day-header", "closed");
+        dayHeader.innerHTML = `
+            <h3>Day ${i + 1}</h3>
+            <span>${dayDate}</span>
+            <button class="day-toggle"><i class="fa-solid fa-chevron-up"></i></button>
+        `;
+
+        const dayPlacesContainer = document.createElement("div");
+        dayPlacesContainer.classList.add("day-places-container", "hidden");
+        dayPlacesContainer.innerHTML = `<p class="empty-msg">Drop places here to schedule</p>`;
+        
+        dayPlacesContainer.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        dayPlacesContainer.addEventListener("drop", (e) => {
+            e.preventDefault();
+            const data = e.dataTransfer.getData("text/plain");
+            const draggedElement = document.getElementById(data);
+            const oldContainer = draggedElement.parentElement;
+
+            dayPlacesContainer.appendChild(draggedElement);
+            updateDayEmptyMsg(oldContainer);
+            updateDayEmptyMsg(dayPlacesContainer);
+        });
+
+        daysPlan.appendChild(dayContainer);
+        dayContainer.appendChild(dayHeader);
+        dayContainer.appendChild(dayPlacesContainer);
+
+        const dayToggle = dayHeader.querySelector(".day-toggle");
+        dayToggle.addEventListener("click", function () {
+            const icon = this.querySelector("i");
+            icon.classList.toggle("fa-chevron-down");
+            icon.classList.toggle("fa-chevron-up");
+            dayPlacesContainer.classList.toggle("hidden");
+            dayHeader.classList.toggle("closed");
+        });
+    }
+}
+
+function updateDayEmptyMsg(container) {
+    const emptyMsg = container.querySelector(".empty-msg");
+    const hasCards = container.querySelectorAll(".plan-card").length > 0;
+
+    if (!hasCards) {
+        if (!emptyMsg) {
+            const msg = document.createElement("p");
+            msg.classList.add("empty-msg");
+            msg.textContent = "Drop places here to schedule";
+            container.appendChild(msg);
+        }
+    } else {
+        if (emptyMsg) emptyMsg.remove();
     }
 }

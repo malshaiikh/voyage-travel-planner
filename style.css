@@ -166,14 +166,21 @@ input:-webkit-autofill:focus {
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.calender-picker {
+#date-picker-container {
     display: flex;
-    flex-direction: column;
-    min-width: 80px;
+    align-items: center;
+    cursor: pointer;
 }
 
-input[type="date"] {
-    display: none;
+#date-range {
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    min-width: 80px;
+    background-color: transparent;
+    border: none;
+    color: var(--text-white);
+    margin-left: 20px;
 }
 
 #explore-btn {
@@ -648,6 +655,7 @@ body.solid-bg {
 #clear-btn {
     color: var(--primary);
     font-size: 12px;
+    margin-left: 8px;
 }
 
 #clear-btn:hover {
@@ -723,7 +731,7 @@ body.solid-bg {
     font-size: 14px;
 }
 
-.days-plan {
+#days-plan {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -742,8 +750,12 @@ body.solid-bg {
     background-color: rgba(255, 255, 255, 0.05);
 }
 
-.day-header .closed {
+.day-header.closed {
     border-radius: 12px;
+}
+
+.day-header:hover {
+    background-color: rgba(255, 255, 255, 0.1)
 }
 
 .day-header h3 {
@@ -763,6 +775,16 @@ body.solid-bg {
 
 .day-places-container {
     padding: 12px;
+}
+
+.day-places-container .empty-msg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    font-size: 14px;
 }
 
 #packing-list {
