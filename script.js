@@ -28,6 +28,9 @@ let currentBBox = null;
 let currentRequest = 0;
 const addedPlaces = new Set();
 
+const EMPTY_UNASSIGNED = "No places added yet";
+const EMPTY_DAY = "Drop places here to schedule";
+
 const datePicker = flatpickr("#date-range", {
     mode: "range",
     minDate: "today",
@@ -60,25 +63,6 @@ detailsOverlay.addEventListener("click", (event) => {
         detailsOverlay.classList.add("hidden");
     }
 })
-
-unassignedPlaces.addEventListener('dragover', (e) => {
-    e.preventDefault();
-});
-
-unassignedPlaces.addEventListener("drop", (e) => {
-    e.preventDefault();
-    const data = e.dataTransfer.getData("text/plain");
-    const draggedElement = document.getElementById(data);
-    const oldDay = draggedElement.parentElement;
-
-    unassignedPlaces.appendChild(draggedElement);
-    updateUnnassignedEmptyMsg();
-    updateDayEmptyMsg(oldDay);
-});
-
-function dragstartHandler(e) {
-    e.dataTransfer.setData("text/plain", e.target.id);
-}
 
 function backHome() {
     homePage.classList.remove("hidden");
@@ -270,6 +254,7 @@ function displayPlaceCard(place, details) {
 
     const placeCard = document.createElement("div");
     placeCard.classList.add("place-card", "glass");
+    placeCard.id = `${xid}-resultCard`; 
     placeCard.dataset.xid = xid;
     placeCard.dataset.img = placePicUrl;
     placeCard.dataset.name = placeName;
@@ -296,14 +281,13 @@ function displayPlaceCard(place, details) {
         addPlace(xid, placePicUrl, placeName); 
     });
 
-    placeCard.addEventListener("click", showDetails);
+    placeCard.addEventListener("click", () => showDetails(xid));
 }
 
-function showDetails(event) {
+function showDetails(xid) {
     detailsOverlay.classList.remove("hidden");
 
-    const card = event.currentTarget;
-    const xid = card.dataset.xid;
+    const card = document.getElementById(`${xid}-resultCard`);
     const img = card.dataset.img;
     const name = card.dataset.name;
     const rating = card.dataset.rating;
@@ -372,16 +356,13 @@ function generateKindsBadges(kinds) {
 }
 
 function addPlace(xid, placePicUrl, placeName) {
-    // remove empty message if it exists
-    const emptyMsg = unassignedPlaces.querySelector(".empty-msg");
-    if (emptyMsg) emptyMsg.remove();
-
     // create new card
     const planCard = document.createElement("div");
     planCard.classList.add("plan-card");
     planCard.id = xid; 
     planCard.draggable = true;
     planCard.addEventListener("dragstart", dragstartHandler);
+    planCard.addEventListener("click", () => showDetails(xid))
     
     planCard.innerHTML = `
         <button class="drag-btn"><i class="fa-solid fa-grip-vertical"></i></button>
@@ -391,13 +372,18 @@ function addPlace(xid, placePicUrl, placeName) {
     `;
     unassignedPlaces.appendChild(planCard);
 
+    // remove empty message if it exists
+    updateEmptyState(unassignedPlaces, EMPTY_UNASSIGNED);
+
     // mark place card as added
     addedPlaces.add(xid);
     updateAddButton(xid);
 
     // handle delete 
     const deleteBtn = planCard.querySelector(".delete-place-btn");
-    deleteBtn.addEventListener("click", () => {
+    deleteBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+
         const parent = planCard.parentElement;
 
         planCard.remove();
@@ -405,24 +391,9 @@ function addPlace(xid, placePicUrl, placeName) {
         updateAddButton(xid);
 
         // if no more cards, add empty msg
-        updateUnnassignedEmptyMsg();
-        updateDayEmptyMsg(parent);
+        updateEmptyState(parent, EMPTY_DAY);
+        updateEmptyState(unassignedPlaces, EMPTY_UNASSIGNED);
     });
-}
-
-function updateUnnassignedEmptyMsg() {
-    const emptyMsg = unassignedPlaces.querySelector(".empty-msg");
-
-    if (unassignedPlaces.querySelectorAll(".plan-card").length === 0) {
-        if (!emptyMsg) {
-            const msg = document.createElement("p");
-            msg.classList.add("empty-msg");
-            msg.textContent = "No places added yet";
-            unassignedPlaces.appendChild(msg);
-        }
-    } else {
-        if (emptyMsg) emptyMsg.remove();
-    }
 }
 
 function updateAddButton(xid) {
@@ -460,22 +431,9 @@ function generateDaysCards(startDate, totalDays) {
 
         const dayPlacesContainer = document.createElement("div");
         dayPlacesContainer.classList.add("day-places-container", "hidden");
-        dayPlacesContainer.innerHTML = `<p class="empty-msg">Drop places here to schedule</p>`;
-        
-        dayPlacesContainer.addEventListener('dragover', (e) => {
-            e.preventDefault();
-        });
+        updateEmptyState(dayPlacesContainer, EMPTY_DAY);
 
-        dayPlacesContainer.addEventListener("drop", (e) => {
-            e.preventDefault();
-            const data = e.dataTransfer.getData("text/plain");
-            const draggedElement = document.getElementById(data);
-            const oldContainer = draggedElement.parentElement;
-
-            dayPlacesContainer.appendChild(draggedElement);
-            updateDayEmptyMsg(oldContainer);
-            updateDayEmptyMsg(dayPlacesContainer);
-        });
+        setupDropZone(dayPlacesContainer);
 
         daysPlan.appendChild(dayContainer);
         dayContainer.appendChild(dayHeader);
@@ -492,7 +450,39 @@ function generateDaysCards(startDate, totalDays) {
     }
 }
 
-function updateDayEmptyMsg(container) {
+setupDropZone(unassignedPlaces);
+
+function setupDropZone(container) {
+    container.addEventListener("dragover", (e) => {
+        e.preventDefault();
+    });
+
+    container.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text/plain");
+        const card = document.getElementById(id);
+
+        moveCard(card, container);
+    });
+}
+
+function moveCard(card, newContainer) {
+    const oldContainer = card.parentElement;
+
+    newContainer.appendChild(card);
+
+    // update both containers
+    updateEmptyState(oldContainer, EMPTY_DAY);
+    updateEmptyState(newContainer,
+        newContainer === unassignedPlaces ? EMPTY_UNASSIGNED : EMPTY_DAY
+    );
+}
+
+function dragstartHandler(e) {
+    e.dataTransfer.setData("text/plain", e.target.id);
+}
+
+function updateEmptyState(container, text) {
     const emptyMsg = container.querySelector(".empty-msg");
     const hasCards = container.querySelectorAll(".plan-card").length > 0;
 
@@ -500,7 +490,7 @@ function updateDayEmptyMsg(container) {
         if (!emptyMsg) {
             const msg = document.createElement("p");
             msg.classList.add("empty-msg");
-            msg.textContent = "Drop places here to schedule";
+            msg.textContent = text;
             container.appendChild(msg);
         }
     } else {
